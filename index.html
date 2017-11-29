@@ -7,10 +7,34 @@
 
   <body>
     <h1>To-Do List</h1>
-    <button id='displayButton'>display to-dos</button>
-    <button id='toggleButton'>toggle all</button>
     
-    <script src="script.js"></script>
+    <div>
+        <button onclick='handlers.displayTodos()'>display to-dos</button>
+        <button onclick='handlers.toggleAll()'>toggle all</button>
+    </div>
+    
+    <div>
+        <button onclick='handlers.addTodo()'>add to-do</button>
+        <input id='addText' type='text'/>
+    </div>  
+      
+    <div>
+        <button onclick='handlers.changeTodo()'>change to-do</button>
+        <input id='changePos' type='number'/>
+        <input id='changeText' type='text'/>
+    </div>
+      
+    <div>
+        <button onclick='handlers.deleteTodo()'>delete to-do</button>
+        <input id='deletePos' type='number'/>
+    </div>
+      
+    <div>
+        <button onclick='handlers.toggleCompleted()'>toggle completed</button>
+        <input id='toggleCompletedPos' type='number'/>
+    </div>
+    
+    <script src='script.js'></script>
   </body>
 
 </html>

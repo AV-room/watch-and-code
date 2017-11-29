@@ -1,6 +1,8 @@
-// There shoulld be a "display todos" button and a "toggle all" button
-// Clicking the "display todos" button should run displayTodos()
-// Clicking the "toggle all" button should run toggleAll()
+// V8: ADDING INTERFACE ELEMENTS FOR ALL METHODS
+// It should have working controls for addTodo()
+// It should have working controls for changeTodo()
+// It should have working controls for deleteTodo()
+// It should have working controls for toggleCompleted()
 
 var todoList = {
   todos: [],
@@ -30,7 +32,6 @@ var todoList = {
     this.displayTodos();
   },
   deleteTodo: function(pos) {
-    debugger;
     this.todos.splice(pos, 1);
     this.displayTodos();
   },
@@ -73,7 +74,8 @@ var todoList = {
   }
 }
 
-var displayButton = document.getElementById('displayButton');
+
+/*var displayButton = document.getElementById('displayButton');
 displayButton.addEventListener('click', function(){
   todoList.displayTodos();
 })
@@ -81,19 +83,36 @@ displayButton.addEventListener('click', function(){
 var toggleButton = document.getElementById('toggleButton');
 toggleButton.addEventListener('click', function(){
   todoList.toggleAll();
-})
+})*/
+
+
+// reorganise handler functions into a single object
+// groups all UI-related code in one place
+var handlers = {
+    displayTodos: function() {
+        todoList.displayTodos();
+    },
+    toggleAll: function() {
+        todoList.toggleAll();
+    },
+    addTodo: function() {
+        todoList.addTodo(document.getElementById('addText').value);
+    },
+    changeTodo: function() {
+        todoList.changeTodo(document.getElementById('changePos').valueAsNumber, 
+                            document.getElementById('changeText').value);
+    },
+    deleteTodo: function() {
+        todoList.deleteTodo(document.getElementById('deletePos').valueAsNumber);
+    },
+    toggleCompleted: function() {
+        todoList.toggleCompleted(document.getElementById('toggleCompletedPos').valueAsNumber)
+    }
+};
 
 todoList.displayTodos();
 todoList.addTodo('brush teeth');
 todoList.addTodo('feed dog');
 todoList.addTodo('lock door');
-todoList.changeTodo(1, 'feed cat');
-todoList.toggleCompleted(0);
-todoList.toggleCompleted(1);
-todoList.toggleCompleted(2);
-todoList.toggleAll();
-todoList.toggleCompleted(0);
-todoList.toggleAll();
-todoList.deleteTodo(2);
 
 
