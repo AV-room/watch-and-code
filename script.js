@@ -1,53 +1,39 @@
-// V8: ADDING INTERFACE ELEMENTS FOR ALL METHODS
-// It should have working controls for addTodo()
-// It should have working controls for changeTodo()
-// It should have working controls for deleteTodo()
-// It should have working controls for toggleCompleted()
+// V9: ESCAPE FROM THE CONSOLE (DOM MANIPULATION)
+// There should be an li element for every todo
+// Each li element should contain todoText
+// Each li element should show completed indicator
 
+//now only contains todo list data and methods to change that data
 var todoList = {
-  todos: [],
-  displayTodos: function() {
-    if(this.todos.length === 0){
-      console.log('Your todo list is empty');
-    }
-    else {
-      console.log('My todos:');
-      for(var i = 0; i < this.todos.length; i++){
-        if(this.todos[i].completed){
-          console.log('(x)', this.todos[i].todoText);
-        }
-        else{
-          console.log('( )', this.todos[i].todoText);
-        }
-      }
-    }
-    
-    console.log('***');
-  },
+  todos: [{
+          todoText: 'brush hair',
+          completed: false
+      }, 
+      {
+          todoText: 'eat waffles',
+          completed: false
+      },
+      {
+          todoText: 'feed giraffe',
+          completed: false
+      }],
   addTodo: function(newTodo) {
     this.todos.push({
       todoText: newTodo,
       completed: false
     });
-    this.displayTodos();
   },
   deleteTodo: function(pos) {
     this.todos.splice(pos, 1);
-    this.displayTodos();
   },
   changeTodo: function(pos, newVal) {
     this.todos[pos].todoText = newVal;
-    this.displayTodos();
   },
   toggleCompleted: function(pos) {
     var targetTodo = this.todos[pos];
     targetTodo.completed = !targetTodo.completed;
-    this.displayTodos();
   },
   toggleAll: function() {
-    
-    console.log('toggleAll()');
-    
     var totalTodos = this.todos.length;
     var completedTodos = 0;
     
@@ -70,49 +56,78 @@ var todoList = {
       }
     }
     
-    this.displayTodos();
   }
 }
 
-
-/*var displayButton = document.getElementById('displayButton');
-displayButton.addEventListener('click', function(){
-  todoList.displayTodos();
-})
-
-var toggleButton = document.getElementById('toggleButton');
-toggleButton.addEventListener('click', function(){
-  todoList.toggleAll();
-})*/
-
-
 // reorganise handler functions into a single object
-// groups all UI-related code in one place
+// only contains code handling user interactions 
 var handlers = {
     displayTodos: function() {
-        todoList.displayTodos();
+        view.displayTodos();
     },
     toggleAll: function() {
         todoList.toggleAll();
+        view.displayTodos();
     },
     addTodo: function() {
-        todoList.addTodo(document.getElementById('addText').value);
+        var addTodoInput = document.getElementById('addText');
+        
+        todoList.addTodo(addTodoInput.value);
+        
+        addTodoInput.value = '';
+        
+        view.displayTodos();
     },
     changeTodo: function() {
-        todoList.changeTodo(document.getElementById('changePos').valueAsNumber, 
-                            document.getElementById('changeText').value);
+        var changePosInput = document.getElementById('changePos');
+        var changeTextInput = document.getElementById('changeText');
+        
+        todoList.changeTodo(changePosInput.valueAsNumber, changeTextInput.value);
+        
+        changePosInput.value = '';
+        changeTextInput.value = '';
+        
+        view.displayTodos();
     },
     deleteTodo: function() {
-        todoList.deleteTodo(document.getElementById('deletePos').valueAsNumber);
+        var deletePosInput = document.getElementById('deletePos');
+        
+        todoList.deleteTodo(deletePosInput.valueAsNumber);
+        
+        deletePosInput.value = '';
+        
+        view.displayTodos();
     },
     toggleCompleted: function() {
-        todoList.toggleCompleted(document.getElementById('toggleCompletedPos').valueAsNumber)
+        var toggleCompletedPosInput = document.getElementById('toggleCompletedPos');
+        
+        todoList.toggleCompleted(toggleCompletedPosInput.valueAsNumber);
+        
+        toggleCompletedPosInput.value = '';
+        
+        view.displayTodos();
     }
 };
 
-todoList.displayTodos();
-todoList.addTodo('brush teeth');
-todoList.addTodo('feed dog');
-todoList.addTodo('lock door');
+// only shows people what todo list looks like
+var view = {
+  displayTodos: function() {
+    
+    //select ul element and reset to empty
+    var ulElement = document.querySelector('ul');
+    ulElement.innerHTML = '';
+      
+    //create an li element for each item in todo list and append to ul element
+    for(var i=0; i<todoList.todos.length; i++) {
+        var liElement = document.createElement('li');
+        var currentTodo = todoList.todos[i]; 
+        liElement.textContent = createCompletedSymbol(currentTodo.completed) + ' ' + currentTodo.todoText;
+        ulElement.appendChild(liElement);
+    }
+      
+  }  
+};
 
-
+function createCompletedSymbol(completed) {
+    return completed ? '(x)' : '( )';
+}
