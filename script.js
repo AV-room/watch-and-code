@@ -1,9 +1,6 @@
-// V10: REFACTORING DELETE AND TOGGLE COMPLETED
-// There should be a way to create delete buttons
-// There should be a delete button for each todo
-// Each li should have an id that has the todo position
-// Delete buttons should have access to the todo id
-// Clicking delete should update todoList.todos and the DOM
+// V11: DESTROY ALL FOR LOOPS
+// todoList.toggleAll() should use forEach
+// view.displayTodos should use forEach
 
 //now only contains todo list data and methods to change that data
 var todoList = {
@@ -28,24 +25,22 @@ var todoList = {
     var totalTodos = this.todos.length;
     var completedTodos = 0;
     
-    for(var i=0; i < totalTodos; i++) {
-      if(this.todos[i].completed) {
-        completedTodos++;
-      }
-    }
-    
-    //case 1: if everything's true, make everything false
-    if(completedTodos === totalTodos) {
-      for(var i=0; i<totalTodos; i++) {
-        this.todos[i].completed = false;
-      }
-    }
-    //case 2: otherwise, make everything true
-    else {
-      for(var i=0; i<totalTodos; i++) {
-        this.todos[i].completed = true;
-      }
-    }
+    this.todos.forEach(function(todo){
+        if(todo.completed) {
+            completedTodos++;
+        } 
+    });
+      
+    this.todos.forEach(function(todo){
+        //case 1: if everything's true, make everything false
+        if(completedTodos === totalTodos){
+            todo.completed = false;
+        } 
+        //case 2: otherwise, make everything true
+        else {
+            todo.completed = true;
+        }
+    });
     
   }
 }
@@ -101,15 +96,14 @@ var view = {
     ulElement.innerHTML = '';
       
     //create an li element for each item in todo list and append to ul element
-    for(var i=0; i<todoList.todos.length; i++) {
+    todoList.todos.forEach(function(todo, i){
+        
+        //console.log('inside forEach...this = ' + this);
         
         //create and configure li element
         var liElement = document.createElement('li');
-        
         liElement.id = i;
-        
-        var currentTodo = todoList.todos[i]; 
-        liElement.textContent = createCompletedSymbol(currentTodo.completed) + ' ' + currentTodo.todoText;
+        liElement.textContent = createCompletedSymbol(todo.completed) + ' ' + todo.todoText;
         
         //append buttons
         liElement.appendChild(this.createToggleCompletedButton());
@@ -117,7 +111,8 @@ var view = {
         
         //add the li to the parent ul element
         ulElement.appendChild(liElement);
-    }
+        
+    }, this); //don't forget to pass outside reference to 'this' in with the callback function!
       
   },
   createDeleteButton: function() {
