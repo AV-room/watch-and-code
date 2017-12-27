@@ -1,0 +1,18 @@
+e.which()
+focus - adds cursor to element i.e. adds focus to element
+blur - take cursor out of element / unhighlight link i.e. takes focus away from element
+key codes
+
+Handlebars.js
+- separates data from view
+- can use data to dynamically generate HTML
+- provides shorthand for generating HTML
+
+Why use templating engines?
+https://css-tricks.com/lodge/learn-jquery/22-need-templating/
+
+localStorage
+JSON.stringify()/JSON.parse()
+
+routing - connect a url with a view (i.e. some code)
+"Routing is the process of determining what code should run when a url is requested."
